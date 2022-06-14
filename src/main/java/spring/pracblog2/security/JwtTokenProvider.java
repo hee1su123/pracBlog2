@@ -23,7 +23,7 @@ public class JwtTokenProvider {
     private final UserDetailsServiceImpl userDetailsService;
     private String secretKey = "pracBlog2";
     // 토큰 유효시간
-    private Long tokenValidTime = 30 + 60 + 1000L;
+    private Long tokenValidTime = 30 * 60 * 1000L;
 
     // 뭔소린지 모르겠음
     @PostConstruct
