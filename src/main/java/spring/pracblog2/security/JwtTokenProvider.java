@@ -23,7 +23,7 @@ public class JwtTokenProvider {
     private final UserDetailsServiceImpl userDetailsService;
     private String secretKey = "pracBlog2";
     // 토큰 유효시간
-    private Long tokenValidTime = 30 + 60 + 1000L;
+    private Long tokenValidTime = 30 * 60 * 1000L;
 
     // 뭔소린지 모르겠음
     @PostConstruct
@@ -59,15 +59,18 @@ public class JwtTokenProvider {
 
     // Request 의 Header 에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN"
     public String resolveToken(HttpServletRequest request) {
+        System.out.println("Header 에서 토큰 가져오기");
         return request.getHeader("X-AUTH-TOKEN");
     }
 
     // 토큰의 유효성 + 만료일자 확인
     public boolean validateToken(String jwtToken) {
+        System.out.println("토큰 유효성 확인");
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e) {
+            System.out.println("토큰 유효성 exception");
             return false;
         }
     }
