@@ -5,7 +5,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import spring.pracblog2.domain.FileDb;
@@ -13,8 +12,7 @@ import spring.pracblog2.domain.Post;
 import spring.pracblog2.dto.request.PostRequestDto;
 import spring.pracblog2.dto.response.PostResponseDto;
 import spring.pracblog2.dto.response.ResponseMessage;
-import spring.pracblog2.left.Comment;
-import spring.pracblog2.left.CommentService;
+import spring.pracblog2.service.CommentService;
 import spring.pracblog2.service.FileDbService;
 import spring.pracblog2.service.PostService;
 import spring.pracblog2.security.UserDetailsImpl;
@@ -22,7 +20,6 @@ import spring.pracblog2.security.UserDetailsImpl;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @RestController
 @RequiredArgsConstructor
@@ -42,13 +39,10 @@ public class PostController {
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @RequestPart(value = "key") PostRequestDto requestDto,
             @RequestPart(value = "file", required = false) MultipartFile file
-    ) {
-        try {
-            postService.save(requestDto, userDetails, file);
-            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("파일 업로드 및 게시글 작성 완료"));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage("파일 업로드 실패"));
-        }
+    ) throws IOException {
+        postService.save(requestDto, userDetails, file);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseMessage("파일 업로드 및 게시글 작성 완료"));
     }
 
 

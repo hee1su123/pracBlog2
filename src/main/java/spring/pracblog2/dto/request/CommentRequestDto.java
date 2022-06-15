@@ -1,4 +1,4 @@
-package spring.pracblog2.left;
+package spring.pracblog2.dto.request;
 
 import lombok.Getter;
 
