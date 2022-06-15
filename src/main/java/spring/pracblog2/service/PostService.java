@@ -38,12 +38,12 @@ public class PostService {
             MultipartFile file
     ) throws IOException {
         Post post = new Post(requestDto, userDetails);
+        postRepository.save(post);
         if (file != null) {
             String fileName = StringUtils.cleanPath(file.getOriginalFilename());
             FileDb fileDb = new FileDb(fileName, file.getContentType(), file.getBytes(), post);
             fileDbRepository.save(fileDb);
         }
-        postRepository.save(post);
     }
 
 
@@ -84,7 +84,6 @@ public class PostService {
         if (!Objects.equals(post.getUser().getId(), userDetails.getUser().getId())) {
             throw new IllegalArgumentException("게시글의 작성자가 아닙니다");
         }
-        //------------------ 잘 이해가 안감....
         post.update(requestDto);
         if (post.getFileDb() != null) {
             FileDb fileDb = fileDbRepository.findById(post.getFileDb().getId()).orElseThrow(
@@ -93,20 +92,22 @@ public class PostService {
             if (file != null) {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
                 fileDb.update(fileName, file.getContentType(), file.getBytes(), post);
+                post.setFileDb(fileDb);
             }
             else {
                 fileDb.setPost(null);
                 fileDbRepository.delete(fileDb);
+                post.setFileDb(null);
             }
         }
         else {
             if (file != null) {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
                 FileDb fileDb = new FileDb(fileName, file.getContentType(), file.getBytes(), post);
+                post.setFileDb(fileDb);
                 fileDbRepository.save(fileDb);
             }
         }
-        //--------------------
     }
 
 
@@ -123,11 +124,10 @@ public class PostService {
         );
         if (!post.getUser().getId().equals(userid)) {
             throw new IllegalArgumentException("게시글의 작성자가 아닙니다");
-        } else {
-            if (post.getFileDb() != null)
-                fileDbRepository.deleteById(post.getFileDb().getId());
-            postRepository.deleteById(postid);
         }
+        if (post.getFileDb() != null)
+            fileDbRepository.deleteById(post.getFileDb().getId());
+        postRepository.deleteById(postid);
     }
 
 }

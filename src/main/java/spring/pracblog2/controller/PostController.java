@@ -33,7 +33,9 @@ public class PostController {
     private final FileDbService fileDbService;
 
 
-    /* 게시글 작성 Not Yet -> 반환값에 추가할 내용 있음..
+    /* 게시글 작성
+    * 글만 작성
+    * 글 + 이미지 작성
     *  */
     @PostMapping("/api/posts")
     public ResponseEntity<ResponseMessage> writePost(
@@ -50,10 +52,11 @@ public class PostController {
     }
 
 
-    /* 특정 게시글 조회 Not Yet
-     * 이미지
-     * 댓글
+    /* 특정 게시글 조회
+     * 이미지 조회
+     * 댓글, 좋아요 조회
      * post.cnt +1
+     *
      * */
     @GetMapping("/api/posts/{id}")
     public ResponseEntity<byte[]> getPost(
@@ -71,7 +74,7 @@ public class PostController {
     }
 
 
-    /* 게시글 전체 조회 Not Yet
+    /* 게시글 전체 조회
     * 댓글빼고 전체 가져와야함
     * */
     @GetMapping("/api/posts")
@@ -85,8 +88,11 @@ public class PostController {
     }
 
 
-    /* 게시글 수정 Not Yet -> 반환값에 추가할 내용 있음
-    * 해당 게시글 작성자인지 확인
+    /* 게시글 수정
+    * 사진 X -> 사진 O
+    * 사진 X -> 사진 X
+    * 사진 O -> 사진 O
+    * 사진 O -> 사진 X
     * */
     @PutMapping("/api/posts/{id}")
     ResponseEntity<ResponseMessage> updatePost(
@@ -101,7 +107,8 @@ public class PostController {
     }
 
 
-    /* 게시글 삭제 Not Yet -> 반환값에 추가할 내용 있음
+    /* 게시글 삭제
+    * FileDb 테이블도 함께 삭제
     * */
     @DeleteMapping("/api/posts/{id}")
     ResponseEntity<ResponseMessage> deletePost(

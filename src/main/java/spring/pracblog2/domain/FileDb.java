@@ -27,7 +27,7 @@ public class FileDb {
     private byte[] data;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private Post post;
 
     public void setPost(Post post) {

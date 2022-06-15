@@ -65,4 +65,7 @@ public class Post extends Timestamped {
 
     }
 
+    public void setFileDb(FileDb fileDb) {
+        this.fileDb = fileDb;
+    }
 }
