@@ -5,10 +5,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
+import spring.pracblog2.domain.Comment;
 import spring.pracblog2.domain.FileDb;
 import spring.pracblog2.domain.Post;
 import spring.pracblog2.dto.request.PostRequestDto;
-import spring.pracblog2.left.CommentRepository;
+import spring.pracblog2.repository.CommentRepository;
 import spring.pracblog2.repository.FileDbRepository;
 import spring.pracblog2.repository.PostRepository;
 import spring.pracblog2.security.UserDetailsImpl;
@@ -16,7 +17,6 @@ import spring.pracblog2.security.UserDetailsImpl;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -127,6 +127,8 @@ public class PostService {
         }
         if (post.getFileDb() != null)
             fileDbRepository.deleteById(post.getFileDb().getId());
+        if (!post.getComments().isEmpty())
+            commentRepository.deleteAll(post.getComments());
         postRepository.deleteById(postid);
     }
 

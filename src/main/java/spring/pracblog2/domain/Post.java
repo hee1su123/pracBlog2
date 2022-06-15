@@ -2,9 +2,7 @@ package spring.pracblog2.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 import spring.pracblog2.dto.request.PostRequestDto;
-import spring.pracblog2.left.Comment;
 import spring.pracblog2.left.Like;
 import spring.pracblog2.security.UserDetailsImpl;
 

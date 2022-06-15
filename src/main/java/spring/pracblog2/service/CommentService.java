@@ -1,13 +1,17 @@
-package spring.pracblog2.left;
+package spring.pracblog2.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import spring.pracblog2.domain.Comment;
 import spring.pracblog2.domain.Post;
+import spring.pracblog2.dto.request.CommentRequestDto;
+import spring.pracblog2.repository.CommentRepository;
 import spring.pracblog2.repository.PostRepository;
 import spring.pracblog2.security.UserDetailsImpl;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +21,8 @@ public class CommentService {
     private final PostRepository postRepository;
 
 
-
-    public CommentResponsetDto save(
+    /* 댓글 저장 */
+    public void save(
             CommentRequestDto requestDto,
             UserDetailsImpl userDetails,
             Long postid
@@ -27,9 +31,7 @@ public class CommentService {
                 () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다")
         );
         Comment comment = new Comment(requestDto, userDetails, post);
-        Comment obj = commentRepository.save(comment);
-        CommentResponsetDto responseDto = new CommentResponsetDto(obj);
-        return responseDto;
+        commentRepository.save(comment);
     }
 
 
@@ -39,20 +41,20 @@ public class CommentService {
     }
 
 
-    public CommentResponsetDto udate(
+    /* 댓글 수정 */
+    @Transactional
+    public void udate(
             CommentRequestDto requestDto,
             UserDetailsImpl userDetails,
             Long commentid
     ) {
-        Long userid = userDetails.getUser().getId();
-        Comment found = commentRepository.findById(commentid).orElseThrow(
+        Comment comment = commentRepository.findById(commentid).orElseThrow(
                 () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다")
         );
-        if (!found.getId().equals(userid)) {
+        if (!Objects.equals(comment.getId(), userDetails.getUser().getId())) {
             throw new IllegalArgumentException("댓글의 작성자가 아닙니다");
         }
-        Comment comment = commentRepository.save(found);
-        return new CommentResponsetDto(comment);
+        comment.update(requestDto);
     }
 
 
@@ -60,9 +62,10 @@ public class CommentService {
             UserDetailsImpl userDetails,
             Long commentid
     ) {
-        Long userid = userDetails.getUser().getId();
-        Optional<Comment> match = commentRepository.findById(commentid);
-        if (match.isEmpty() || !match.get().getUser().getId().equals(userid)) {
+        Comment comment = commentRepository.findById(commentid).orElseThrow(
+                () -> new IllegalArgumentException("댓글을 찾을 수 없습니다")
+        );
+        if (!Objects.equals(comment.getId(), userDetails.getUser().getId())) {
             throw new IllegalArgumentException("댓글의 작성자가 아닙니다");
         }
         commentRepository.deleteById(commentid);

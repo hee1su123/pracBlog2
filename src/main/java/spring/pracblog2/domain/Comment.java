@@ -1,10 +1,8 @@
-package spring.pracblog2.left;
+package spring.pracblog2.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import spring.pracblog2.domain.Post;
-import spring.pracblog2.domain.Timestamped;
-import spring.pracblog2.domain.User;
+import spring.pracblog2.dto.request.CommentRequestDto;
 import spring.pracblog2.security.UserDetailsImpl;
 
 import javax.persistence.*;
@@ -18,18 +16,24 @@ public class Comment extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String content;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private User user;
 
     @ManyToOne
+    @JoinColumn(nullable = false)
     private Post post;
 
     public Comment(CommentRequestDto requestDto, UserDetailsImpl userDetails, Post post) {
         this.content = requestDto.getContent();
         this.user = userDetails.getUser();
         this.post = post;
+    }
+
+    public void update(CommentRequestDto requestDto) {
+        this.content = requestDto.getContent();
     }
 }

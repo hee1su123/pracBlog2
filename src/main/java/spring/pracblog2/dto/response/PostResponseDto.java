@@ -1,10 +1,8 @@
 package spring.pracblog2.dto.response;
 
 import lombok.Getter;
-import org.springframework.context.annotation.Primary;
-import spring.pracblog2.domain.FileDb;
 import spring.pracblog2.domain.Post;
-import spring.pracblog2.left.Comment;
+import spring.pracblog2.domain.Comment;
 
 import java.util.List;
 

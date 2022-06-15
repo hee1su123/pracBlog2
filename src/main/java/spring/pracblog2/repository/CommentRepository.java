@@ -1,7 +1,7 @@
-package spring.pracblog2.left;
+package spring.pracblog2.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import spring.pracblog2.left.Comment;
+import spring.pracblog2.domain.Comment;
 
 import java.util.List;
 

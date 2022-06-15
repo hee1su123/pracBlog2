@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spring.pracblog2.dto.request.RegisterRequestDto;
-import spring.pracblog2.left.Comment;
 import spring.pracblog2.left.Like;
 
 import javax.persistence.*;
