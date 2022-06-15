@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import spring.pracblog2.dto.request.RegisterRequestDto;
 import spring.pracblog2.left.Comment;
 import spring.pracblog2.left.Like;
-import spring.pracblog2.left.Post;
 
 import javax.persistence.*;
 import java.util.ArrayList;

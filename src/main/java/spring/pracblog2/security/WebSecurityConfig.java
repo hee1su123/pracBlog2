@@ -43,20 +43,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // 회원 관리 처리 API 에 대해 CSRF 무시
         http
                 .csrf().disable()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
-        http.authorizeRequests()
+                .and()
 
+                .authorizeRequests()
                 // 게시글 전체 조회, 회원가입 URL 은 login 없이 허용
                 .antMatchers("/api/register")
                 .permitAll()
                 .antMatchers("/api/login")
                 .permitAll()
-                .antMatchers("/api/posts")
-                .permitAll()
+//                .antMatchers("/api/posts")
+//                .permitAll()
                 // 그 외 어떤 요청이든 '인증'
-                .antMatchers("/**").hasRole("USER")
-                .anyRequest().authenticated()
+                .anyRequest().hasRole("USER")
+//                .anyRequest().authenticated()
 
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider),
