@@ -3,7 +3,8 @@ package spring.pracblog2.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spring.pracblog2.dto.request.PostRequestDto;
-import spring.pracblog2.left.Like;
+import spring.pracblog2.left.Likes;
+import spring.pracblog2.left.Likes;
 import spring.pracblog2.security.UserDetailsImpl;
 
 import javax.persistence.*;
@@ -36,10 +37,10 @@ public class Post extends Timestamped {
     private User user;
 
     @OneToMany(mappedBy = "post")
-    private List<Comment> comments;
+    private List<Comment> commentList;
 
     @OneToMany(mappedBy = "post")
-    private List<Like> likes;
+    private List<Likes> likesList;
 
     public Post(PostRequestDto requestDto, UserDetailsImpl userDetails) {
 

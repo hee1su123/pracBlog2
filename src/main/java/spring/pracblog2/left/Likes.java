@@ -1,25 +1,32 @@
 package spring.pracblog2.left;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import spring.pracblog2.domain.Post;
+import spring.pracblog2.domain.Timestamped;
 import spring.pracblog2.domain.User;
 
 import javax.persistence.*;
 
 @Getter
 @Entity
-public class Like {
+@NoArgsConstructor
+public class Likes extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private Post post;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(nullable = false)
     private User user;
 
+    public Likes(Post post, User user) {
+        this.post = post;
+        this.user = user;
+    }
 }

@@ -11,6 +11,7 @@ import spring.pracblog2.domain.Post;
 import spring.pracblog2.dto.request.PostRequestDto;
 import spring.pracblog2.repository.CommentRepository;
 import spring.pracblog2.repository.FileDbRepository;
+import spring.pracblog2.repository.LikeRepository;
 import spring.pracblog2.repository.PostRepository;
 import spring.pracblog2.security.UserDetailsImpl;
 
@@ -26,6 +27,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
     private final FileDbRepository fileDbRepository;
+    private final LikeRepository likeRepository;
 
 
     /* 사진 포함 게시글 저장 Done -> 사진 O, 사진 X 저장 확인 완료 06-15-16:10
@@ -127,8 +129,10 @@ public class PostService {
         }
         if (post.getFileDb() != null)
             fileDbRepository.deleteById(post.getFileDb().getId());
-        if (!post.getComments().isEmpty())
-            commentRepository.deleteAll(post.getComments());
+        if (!post.getCommentList().isEmpty())
+            commentRepository.deleteAll(post.getCommentList());
+        if (!post.getLikesList().isEmpty())
+            likeRepository.deleteAll(post.getLikesList());
         postRepository.deleteById(postid);
     }
 

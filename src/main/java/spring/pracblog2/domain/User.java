@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spring.pracblog2.dto.request.RegisterRequestDto;
-import spring.pracblog2.left.Like;
+import spring.pracblog2.left.Likes;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class User extends Timestamped {
     private List<Comment> commentList;
 
     @OneToMany(mappedBy = "user")
-    private List<Like> likeList;
+    private List<Likes> likesList;
 
     public User(RegisterRequestDto requestDto, String password, List<String> roles) {
         this.email = requestDto.getEmail();
