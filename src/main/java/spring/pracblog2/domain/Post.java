@@ -30,8 +30,7 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String template;
 
-    @OneToOne
-    @JoinColumn
+    @OneToOne(mappedBy = "post")
     private FileDb fileDb;
 
     @ManyToOne
@@ -54,18 +53,16 @@ public class Post extends Timestamped {
 
     }
 
-    public Post(PostRequestDto requestDto, UserDetailsImpl userDetails, FileDb fileDb) {
-
-        this.count = 0L;
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
-        this.template = requestDto.getTemplate();
-        this.user = userDetails.getUser();
-        this.fileDb = fileDb;
-
-    }
-
     public void setCount() {
         this.count += 1;
     }
+
+    public void update(PostRequestDto requestDto) {
+
+        this.title = requestDto.getTitle();
+        this.content = requestDto.getContent();
+        this.template = requestDto.getTemplate();
+
+    }
+
 }

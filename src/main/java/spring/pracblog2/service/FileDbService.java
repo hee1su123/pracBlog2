@@ -16,12 +16,6 @@ public class FileDbService {
 
     private final FileDbRepository fileDbRepository;
 
-    public FileDb store(MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        FileDb filedb = new FileDb(fileName, file.getContentType(), file.getBytes());
-        return fileDbRepository.save(filedb);
-    }
-
     public FileDb getFile(String id) {
         return fileDbRepository.findById(id).get();
     }

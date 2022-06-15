@@ -1,9 +1,11 @@
 package spring.pracblog2.dto.response;
 
+import lombok.Getter;
 import spring.pracblog2.domain.User;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class UserResponseDto {
 
     public UserResponseDto(User user) {

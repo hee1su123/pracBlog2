@@ -2,12 +2,10 @@ package spring.pracblog2.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
-@Setter
 @Getter
 @Entity
 @NoArgsConstructor
@@ -18,21 +16,35 @@ public class FileDb {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String type;
 
     @Lob
+    @Column(nullable = false)
     private byte[] data;
 
-    @OneToOne(mappedBy = "fileDb")
+    @OneToOne
+    @JoinColumn
     private Post post;
 
-    public FileDb(String name, String type, byte[] data) {
+    public void setPost(Post post) {
+        this.post = post;
+    }
+
+    public FileDb(String name, String type, byte[] data, Post post) {
         this.name = name;
         this.type = type;
         this.data = data;
+        this.post = post;
+    }
+
+    public void update(String name, String type, byte[] data, Post post) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+        this.post = post;
     }
 }
