@@ -31,9 +31,9 @@ public class PostController {
 
 
     /* 게시글 작성
-    * 글만 작성
-    * 글 + 이미지 작성
-    *  */
+     * 글만 작성
+     * 글 + 이미지 작성
+     *  */
     @PostMapping("/api/posts")
     public ResponseEntity<ResponseMessage> writePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -53,25 +53,32 @@ public class PostController {
      *
      * */
     @GetMapping("/api/posts/{id}")
-    public ResponseEntity<byte[]> getPost(
+    public ResponseEntity<PostResponseDto> getPost(
             @PathVariable Long id
     ) {
         Post post = postService.findById(id);
         PostResponseDto responseDto = new PostResponseDto(post);
-//        return ResponseEntity.status(HttpStatus.OK)
-//                .body(responseDto);
-        FileDb fileDb = post.getFileDb();
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDb.getName() + "\"")
-                .body(fileDb.getData());
+        return ResponseEntity.status(HttpStatus.OK).body(responseDto);
+    }
 
+    @GetMapping("/api/posts/image/{id}")
+    public ResponseEntity<byte[]> getImage(
+            @PathVariable Long id
+    ) {
+        Post post = postService.findById(id);
+        FileDb fileDb = post.getFileDb();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-type", fileDb.getType());
+        headers.add("Content-Length", String.valueOf(fileDb.getData().length));
+        return new ResponseEntity<byte[]>(fileDb.getData(), headers, HttpStatus.OK);
     }
 
 
     /* 게시글 전체 조회
-    * 댓글빼고 전체 가져와야함
-    * */
+     * 댓글빼고 전체 가져와야함
+     * */
     @GetMapping("/api/posts")
+
     public ResponseEntity<List<PostResponseDto>> getAllPost() {
         List<PostResponseDto> responseDtoList = new ArrayList<>();
         List<Post> postList = postService.findAll();
@@ -83,11 +90,11 @@ public class PostController {
 
 
     /* 게시글 수정
-    * 사진 X -> 사진 O
-    * 사진 X -> 사진 X
-    * 사진 O -> 사진 O
-    * 사진 O -> 사진 X
-    * */
+     * 사진 X -> 사진 O
+     * 사진 X -> 사진 X
+     * 사진 O -> 사진 O
+     * 사진 O -> 사진 X
+     * */
     @PutMapping("/api/posts/{id}")
     ResponseEntity<ResponseMessage> updatePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -102,8 +109,8 @@ public class PostController {
 
 
     /* 게시글 삭제
-    * FileDb 테이블도 함께 삭제
-    * */
+     * FileDb 테이블도 함께 삭제
+     * */
     @DeleteMapping("/api/posts/{id}")
     ResponseEntity<ResponseMessage> deletePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
