@@ -15,9 +15,9 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String template;
-    private byte[] data;
     private List<Comment> commentList;
     private List<Likes> likesList;
+    private String imgUrl;
 
 
     public PostResponseDto(Post post) {
@@ -27,12 +27,12 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.content = post.getContent();
         this.template = post.getTemplate();
-        if (post.getFileDb() != null)
-            this.data = post.getFileDb().getData();
         if (post.getCommentList() != null)
             this.commentList = post.getCommentList();
         if (post.getLikesList() != null)
             this.likesList = post.getLikesList();
+        if (post.getFileDb() != null)
+            this.imgUrl = "http://localhost:8080/api/posts/image/"+post.getId();
 
     }
 
