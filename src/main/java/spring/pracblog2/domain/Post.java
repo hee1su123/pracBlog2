@@ -3,8 +3,6 @@ package spring.pracblog2.domain;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import spring.pracblog2.dto.request.PostRequestDto;
-import spring.pracblog2.left.Likes;
-import spring.pracblog2.left.Likes;
 import spring.pracblog2.security.UserDetailsImpl;
 
 import javax.persistence.*;

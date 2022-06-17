@@ -1,7 +1,8 @@
-package spring.pracblog2.left;
+package spring.pracblog2.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import spring.pracblog2.domain.Likes;
 import spring.pracblog2.domain.Post;
 import spring.pracblog2.domain.User;
 import spring.pracblog2.repository.LikeRepository;

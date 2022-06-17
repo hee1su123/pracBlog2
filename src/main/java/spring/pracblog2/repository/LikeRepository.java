@@ -3,7 +3,7 @@ package spring.pracblog2.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import spring.pracblog2.domain.Post;
 import spring.pracblog2.domain.User;
-import spring.pracblog2.left.Likes;
+import spring.pracblog2.domain.Likes;
 
 import java.util.Optional;
 

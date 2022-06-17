@@ -3,7 +3,7 @@ package spring.pracblog2.dto.response;
 import lombok.Getter;
 import spring.pracblog2.domain.Post;
 import spring.pracblog2.domain.Comment;
-import spring.pracblog2.left.Likes;
+import spring.pracblog2.domain.Likes;
 
 import java.util.List;
 

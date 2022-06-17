@@ -1,4 +1,4 @@
-package spring.pracblog2.left;
+package spring.pracblog2.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
