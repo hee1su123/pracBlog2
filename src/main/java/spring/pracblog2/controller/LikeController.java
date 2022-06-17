@@ -1,4 +1,4 @@
-package spring.pracblog2.left;
+package spring.pracblog2.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import spring.pracblog2.dto.response.ResponseMessage;
 import spring.pracblog2.security.UserDetailsImpl;
+import spring.pracblog2.service.LikeService;
 
 @RestController
 @RequiredArgsConstructor
