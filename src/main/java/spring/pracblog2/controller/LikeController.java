@@ -18,21 +18,21 @@ public class LikeController {
 
     private final LikeService likeService;
 
-    @PostMapping("/api/posts/{postid}/like")
+    @PostMapping("/api/posts/{postId}/like")
     ResponseEntity<ResponseMessage> postLike(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PathVariable Long postid
+            @PathVariable Long postId
     ) {
-        likeService.post(userDetails, postid);
+        likeService.postLike(userDetails, postId);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("좋아요"));
     }
 
-    @DeleteMapping("/api/posts/{postid}/like")
+    @DeleteMapping("/api/posts/{postId}/like")
     ResponseEntity<ResponseMessage> deleteLike(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @PathVariable Long postid
+            @PathVariable Long postId
     ) {
-        likeService.delete(userDetails, postid);
+        likeService.deleteLike(userDetails, postId);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("좋아요 취소"));
     }
 }

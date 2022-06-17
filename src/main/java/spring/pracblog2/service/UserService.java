@@ -27,7 +27,7 @@ public class UserService {
     * role 은 초기값 ROLE_USER 설정
     * 사용가능 시 save 함수로 DB에 저장
     * */
-    public Boolean register(RegisterRequestDto requestDto) {
+    public void register(RegisterRequestDto requestDto) {
         String password = passwordEncoder.encode(requestDto.getPassword());
         List<String> roles = Collections.singletonList("ROLE_USER");
         User user = new User(requestDto, password, roles);
@@ -37,7 +37,6 @@ public class UserService {
             throw new IllegalArgumentException("중복된 e-mail 입니다");
         }
         userRepository.save(user);
-        return true;
     }
 
 

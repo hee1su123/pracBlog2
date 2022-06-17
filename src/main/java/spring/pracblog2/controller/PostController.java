@@ -13,7 +13,6 @@ import spring.pracblog2.dto.request.PostRequestDto;
 import spring.pracblog2.dto.response.PostResponseDto;
 import spring.pracblog2.dto.response.ResponseMessage;
 import spring.pracblog2.service.CommentService;
-import spring.pracblog2.service.FileDbService;
 import spring.pracblog2.service.PostService;
 import spring.pracblog2.security.UserDetailsImpl;
 
@@ -26,14 +25,9 @@ import java.util.List;
 public class PostController {
 
     private final PostService postService;
-    private final CommentService commentService;
-    private final FileDbService fileDbService;
 
 
-    /* 게시글 작성
-     * 글만 작성
-     * 글 + 이미지 작성
-     *  */
+    /* 게시글 작성 */
     @PostMapping("/api/posts")
     public ResponseEntity<ResponseMessage> writePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -46,12 +40,7 @@ public class PostController {
     }
 
 
-    /* 특정 게시글 조회
-     * 이미지 조회
-     * 댓글, 좋아요 조회
-     * post.cnt +1
-     *
-     * */
+    /* 특정 게시글 조회 */
     @GetMapping("/api/posts/{id}")
     public ResponseEntity<PostResponseDto> getPost(
             @PathVariable Long id
@@ -61,6 +50,8 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(responseDto);
     }
 
+
+    /* 이미지 조회(이미지 URL) */
     @GetMapping("/api/posts/image/{id}")
     public ResponseEntity<byte[]> getImage(
             @PathVariable Long id
@@ -74,9 +65,7 @@ public class PostController {
     }
 
 
-    /* 게시글 전체 조회
-     * 댓글빼고 전체 가져와야함
-     * */
+    /* 게시글 전체 조회 */
     @GetMapping("/api/posts")
 
     public ResponseEntity<List<PostResponseDto>> getAllPost() {
@@ -89,12 +78,7 @@ public class PostController {
     }
 
 
-    /* 게시글 수정
-     * 사진 X -> 사진 O
-     * 사진 X -> 사진 X
-     * 사진 O -> 사진 O
-     * 사진 O -> 사진 X
-     * */
+    /* 게시글 수정 */
     @PutMapping("/api/posts/{id}")
     ResponseEntity<ResponseMessage> updatePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -108,9 +92,7 @@ public class PostController {
     }
 
 
-    /* 게시글 삭제
-     * FileDb 테이블도 함께 삭제
-     * */
+    /* 게시글 삭제 */
     @DeleteMapping("/api/posts/{id}")
     ResponseEntity<ResponseMessage> deletePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
