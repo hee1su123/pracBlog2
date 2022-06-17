@@ -54,7 +54,7 @@ public class User extends Timestamped {
         this.name = requestDto.getName();
         this.nickname = requestDto.getNickname();
         this.password = password;
-        this.intro = requestDto.getIntro();
+        this.intro = requestDto.getIntroduce();
         this.roles = roles;
     }
 }

@@ -20,8 +20,8 @@ public class LikeService {
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
 
-    public void post(UserDetailsImpl userDetails, Long postid) {
-        Post post = postRepository.findById(postid).orElseThrow(
+    public void postLike(UserDetailsImpl userDetails, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다")
         );
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
@@ -31,13 +31,14 @@ public class LikeService {
         if (found.isPresent())
             throw new IllegalArgumentException("이미 좋아요를 눌렀습니다");
         else {
+            post.setLikeByMe(true);
             Likes like = new Likes(post, user);
             likeRepository.save(like);
         }
     }
 
-    public void delete(UserDetailsImpl userDetails, Long postid) {
-        Post post = postRepository.findById(postid).orElseThrow(
+    public void deleteLike(UserDetailsImpl userDetails, Long postId) {
+        Post post = postRepository.findById(postId).orElseThrow(
                 () -> new IllegalArgumentException("존재하지 않는 게시글입니다")
         );
         User user = userRepository.findById(userDetails.getUser().getId()).orElseThrow(
@@ -47,6 +48,7 @@ public class LikeService {
         if (found.isEmpty())
             throw new IllegalArgumentException("좋아요를 누른적이 없습니다");
         else {
+            post.setLikeByMe(false);
             likeRepository.delete(found.get());
         }
     }

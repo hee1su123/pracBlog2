@@ -10,6 +10,6 @@ public class RegisterRequestDto {
     private String name;
     private String nickname;
     private String password;
-    private String intro;
+    private String introduce;
 
 }

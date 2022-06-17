@@ -24,8 +24,13 @@ public class Post extends Timestamped {
     @Column(nullable = false)
     private String content;
 
+    @Column
+    private Long template;
+
     @Column(nullable = false)
-    private String template;
+    private boolean likeByMe;
+
+
 
     @OneToOne(mappedBy = "post")
     private FileDb fileDb;
@@ -47,11 +52,8 @@ public class Post extends Timestamped {
         this.content = requestDto.getContent();
         this.template = requestDto.getTemplate();
         this.user = userDetails.getUser();
+        this.likeByMe = false;
 
-    }
-
-    public void setCount() {
-        this.count += 1;
     }
 
     public void update(PostRequestDto requestDto) {
@@ -62,7 +64,12 @@ public class Post extends Timestamped {
 
     }
 
-    public void setFileDb(FileDb fileDb) {
-        this.fileDb = fileDb;
+    public void setCount() {
+        this.count += 1;
     }
+
+    public void setLikeByMe(boolean likeByMe) {
+        this.likeByMe = likeByMe;
+    }
+
 }
