@@ -10,6 +10,8 @@ import spring.pracblog2.dto.request.CommentRequestDto;
 import spring.pracblog2.service.CommentService;
 import spring.pracblog2.security.UserDetailsImpl;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class CommentController {
@@ -21,7 +23,7 @@ public class CommentController {
     ResponseEntity<ResponseMessage> postComment(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long postId,
-            @RequestBody CommentRequestDto requestDto
+            @Valid @RequestBody CommentRequestDto requestDto
     ) {
         commentService.save(requestDto, userDetails, postId);
         return ResponseEntity.status(HttpStatus.OK)
@@ -34,7 +36,7 @@ public class CommentController {
     ResponseEntity<ResponseMessage> updateComment(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long commentId,
-            @RequestBody CommentRequestDto requestDto
+            @Valid @RequestBody CommentRequestDto requestDto
     ) {
         commentService.update(requestDto, userDetails, commentId);
         return ResponseEntity.status(HttpStatus.OK)

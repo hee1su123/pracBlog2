@@ -16,6 +16,7 @@ import spring.pracblog2.security.JwtTokenProvider;
 import spring.pracblog2.security.UserDetailsImpl;
 import spring.pracblog2.service.UserService;
 
+import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Map;
 
@@ -28,7 +29,7 @@ public class UserController {
     /* 회원가입 */
     @PostMapping("/api/register")
     ResponseEntity<ResponseMessage> signUp(
-            @RequestBody RegisterRequestDto requestDto
+            @Valid @RequestBody RegisterRequestDto requestDto
     ) {
         userService.register(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage("회원가입 완료"));
@@ -37,7 +38,7 @@ public class UserController {
     /* 로그인 */
     @PostMapping("/api/login")
     public ResponseEntity<String> login(
-            @RequestBody LoginRequestDto requestDto
+            @Valid @RequestBody LoginRequestDto requestDto
     ) {
         String message = userService.login(requestDto);
         return ResponseEntity.status(HttpStatus.OK).body(message);

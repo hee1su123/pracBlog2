@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import spring.pracblog2.domain.Comment;
 import spring.pracblog2.domain.Post;
 import spring.pracblog2.dto.request.CommentRequestDto;
+import spring.pracblog2.error.ErrorCode;
+import spring.pracblog2.error.exception.BusinessException;
 import spring.pracblog2.repository.CommentRepository;
 import spring.pracblog2.repository.PostRepository;
 import spring.pracblog2.security.UserDetailsImpl;
@@ -28,7 +30,7 @@ public class CommentService {
             Long postId
     ) {
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다")
+                () -> new BusinessException("해당 게시글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
         Comment comment = new Comment(requestDto, userDetails, post);
         commentRepository.save(comment);
@@ -43,10 +45,10 @@ public class CommentService {
             Long commentId
     ) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("해당 댓글이 존재하지 않습니다")
+                () -> new BusinessException("해당 댓글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
         if (!Objects.equals(comment.getId(), userDetails.getUser().getId())) {
-            throw new IllegalArgumentException("댓글의 작성자가 아닙니다");
+            throw new BusinessException("댓글의 작성자가 아닙니다", ErrorCode.NOT_AUTHORIZED);
         }
         comment.update(requestDto);
     }
@@ -57,10 +59,10 @@ public class CommentService {
             Long commentId
     ) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("댓글을 찾을 수 없습니다")
+                () -> new BusinessException("해당 댓글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
         if (!Objects.equals(comment.getId(), userDetails.getUser().getId())) {
-            throw new IllegalArgumentException("댓글의 작성자가 아닙니다");
+            throw new BusinessException("댓글의 작성자가 아닙니다", ErrorCode.NOT_AUTHORIZED);
         }
         commentRepository.deleteById(commentId);
     }

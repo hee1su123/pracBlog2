@@ -9,6 +9,8 @@ import spring.pracblog2.domain.Comment;
 import spring.pracblog2.domain.FileDb;
 import spring.pracblog2.domain.Post;
 import spring.pracblog2.dto.request.PostRequestDto;
+import spring.pracblog2.error.ErrorCode;
+import spring.pracblog2.error.exception.BusinessException;
 import spring.pracblog2.repository.CommentRepository;
 import spring.pracblog2.repository.FileDbRepository;
 import spring.pracblog2.repository.LikeRepository;
@@ -51,7 +53,7 @@ public class PostService {
     @Transactional
     public Post findById(Long postId) {
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다")
+                () -> new BusinessException("해당 게시글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
         post.setCount();
         return post;
@@ -73,15 +75,15 @@ public class PostService {
             Long postId
     ) throws IOException {
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("해당 게시글을 찾을 수 없습니다")
+                () -> new BusinessException("해당 게시글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
         if (!Objects.equals(post.getUser().getId(), userDetails.getUser().getId())) {
-            throw new IllegalArgumentException("게시글의 작성자가 아닙니다");
+            throw new BusinessException("게시글의 작성자가 아닙니다", ErrorCode.NOT_AUTHORIZED);
         }
         post.update(requestDto);
         if (post.getFileDb() != null) {
             FileDb fileDb = fileDbRepository.findById(post.getFileDb().getId()).orElseThrow(
-                    () -> new IllegalArgumentException("게시글 찾기 오류")
+                    () -> new BusinessException("해당 게시글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
             );
             if (file != null) {
                 String fileName = StringUtils.cleanPath(file.getOriginalFilename());
@@ -107,10 +109,10 @@ public class PostService {
     public void delete(UserDetailsImpl userDetails, Long postId) {
         Long userid = userDetails.getUser().getId();
         Post post = postRepository.findById(postId).orElseThrow(
-                () -> new IllegalArgumentException("게시글이 존재하지 않습니다")
+                () -> new BusinessException("해당 게시글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
         if (!post.getUser().getId().equals(userid)) {
-            throw new IllegalArgumentException("게시글의 작성자가 아닙니다");
+            throw new BusinessException("게시글의 작성자가 아닙니다", ErrorCode.NOT_AUTHORIZED);
         }
         if (post.getFileDb() != null)
             fileDbRepository.deleteById(post.getFileDb().getId());
