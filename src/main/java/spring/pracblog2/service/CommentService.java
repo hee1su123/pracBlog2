@@ -47,7 +47,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new BusinessException("해당 댓글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
-        if (!Objects.equals(comment.getId(), userDetails.getUser().getId())) {
+        if (!Objects.equals(comment.getUser().getId(), userDetails.getUser().getId())) {
             throw new BusinessException("댓글의 작성자가 아닙니다", ErrorCode.NOT_AUTHORIZED);
         }
         comment.update(requestDto);
@@ -61,7 +61,7 @@ public class CommentService {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new BusinessException("해당 댓글을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
-        if (!Objects.equals(comment.getId(), userDetails.getUser().getId())) {
+        if (!Objects.equals(comment.getUser().getId(), userDetails.getUser().getId())) {
             throw new BusinessException("댓글의 작성자가 아닙니다", ErrorCode.NOT_AUTHORIZED);
         }
         commentRepository.deleteById(commentId);

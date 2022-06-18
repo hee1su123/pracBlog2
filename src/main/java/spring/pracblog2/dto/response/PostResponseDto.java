@@ -6,6 +6,7 @@ import spring.pracblog2.domain.Comment;
 import spring.pracblog2.domain.Likes;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,10 +21,12 @@ public class PostResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
+    private String email;
+
     private boolean likeByMe;
     private Long likeCount;
 
-    private List<Comment> commentList;
+    private List<CommentResponseDto> responseDtoList = new ArrayList<>();
     private String imageUrl;
 
 
@@ -38,11 +41,15 @@ public class PostResponseDto {
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
 
+        this.email = post.getUser().getEmail();
+
         this.likeByMe = post.isLikeByMe();
         this.likeCount = (long) post.getLikesList().size();
 
-        if (post.getCommentList() != null)
-            this.commentList = post.getCommentList();
+        if (post.getCommentList() != null) {
+            for (Comment c : post.getCommentList())
+                responseDtoList.add(new CommentResponseDto(c));
+        }
         if (post.getFileDb() != null)
             this.imageUrl = "http://localhost:8080/api/posts/image/"+post.getId();
 
