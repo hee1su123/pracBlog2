@@ -16,6 +16,7 @@ import spring.pracblog2.service.CommentService;
 import spring.pracblog2.service.PostService;
 import spring.pracblog2.security.UserDetailsImpl;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +32,8 @@ public class PostController {
     @PostMapping("/api/posts")
     public ResponseEntity<ResponseMessage> writePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
-            @RequestPart(value = "key") PostRequestDto requestDto,
-            @RequestPart(value = "file", required = false) MultipartFile file
+            @Valid @RequestPart(value = "key") PostRequestDto requestDto,
+            @Valid @RequestPart(value = "file", required = false) MultipartFile file
     ) throws IOException {
         postService.save(requestDto, userDetails, file);
         return ResponseEntity.status(HttpStatus.OK)
@@ -83,8 +84,8 @@ public class PostController {
     ResponseEntity<ResponseMessage> updatePost(
             @AuthenticationPrincipal UserDetailsImpl userDetails,
             @PathVariable Long id,
-            @RequestPart(value = "key") PostRequestDto requestDto,
-            @RequestPart(value = "file", required = false) MultipartFile file
+            @Valid @RequestPart(value = "key") PostRequestDto requestDto,
+            @Valid @RequestPart(value = "file", required = false) MultipartFile file
     ) throws IOException {
         postService.update(requestDto, userDetails, file, id);
         return ResponseEntity.status(HttpStatus.OK)

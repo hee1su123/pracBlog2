@@ -7,6 +7,8 @@ import spring.pracblog2.domain.User;
 import spring.pracblog2.dto.request.LoginRequestDto;
 import spring.pracblog2.dto.request.RegisterRequestDto;
 import spring.pracblog2.dto.response.UserResponseDto;
+import spring.pracblog2.error.ErrorCode;
+import spring.pracblog2.error.exception.BusinessException;
 import spring.pracblog2.repository.UserRepository;
 import spring.pracblog2.security.JwtTokenProvider;
 
@@ -22,6 +24,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+
     /* 회원가입 Done
     * 해당 이메일이 사용된적 있는지 확인
     * role 은 초기값 ROLE_USER 설정
@@ -34,7 +37,7 @@ public class UserService {
         String email = user.getEmail();
         Optional<User> found = userRepository.findByEmail(email);
         if (found.isPresent()) {
-            throw new IllegalArgumentException("중복된 e-mail 입니다");
+            throw new BusinessException("이미 사용중인 e-mail 입니다", ErrorCode.ALREADY_USED);
         }
         userRepository.save(user);
     }
@@ -46,15 +49,12 @@ public class UserService {
     * jwt 생성 후 반환
     * */
     public String login(LoginRequestDto requestDto) {
-        System.out.println("로그인 서비스");
         User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(
-                () -> new IllegalArgumentException("가입되지 않은 e-mail 입니다")
+                () -> new BusinessException("해당 e-mail 을 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB)
         );
-        System.out.println("이메일 중복확인 완료");
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("잘못된 비밀번호 입니다");
+            throw new BusinessException("잘못된 비밀번호 입니다", ErrorCode.WRONG_DATA);
         }
-        System.out.println("비밀번호 확인 완료");
         return jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
     }
 
@@ -69,7 +69,7 @@ public class UserService {
             return new UserResponseDto(user);
         }
         else {
-            throw new IllegalArgumentException("일치하는 회원 정보가 없습니다");
+            throw new BusinessException("해당 사용자를 찾을 수 없습니다", ErrorCode.NO_DATA_IN_DB);
         }
     }
 }
