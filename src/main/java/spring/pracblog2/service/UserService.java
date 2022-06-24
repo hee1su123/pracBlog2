@@ -14,6 +14,7 @@ import spring.pracblog2.security.JwtTokenProvider;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -64,7 +65,7 @@ public class UserService {
     *  */
     public UserResponseDto getUser(Long id) {
         Optional<User> obj = userRepository.findById(id);
-        if (obj.isPresent()) {
+        if (obj.isPresent() && Objects.equals(obj.get().getId(), id)) {
             User user = obj.get();
             return new UserResponseDto(user);
         }

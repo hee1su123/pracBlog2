@@ -1,11 +1,13 @@
 package spring.pracblog2.dto.request;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.validation.constraints.*;
 
 /* Done */
 @Getter
+@Builder
 public class RegisterRequestDto {
 
     @Pattern(regexp = "[a-zA-z0-9]+@[a-zA-z]+[.]+[a-zA-z.]+")
